@@ -97,12 +97,24 @@ public class ElementController implements MouseListener, MouseMotionListener, Ac
             selection = treeView.getSelection();
         }
         // funny
-        if (elementView != null) {
+
+        System.out.println("TreeView: " + treeView);
+        System.out.println("BoardView: " + boardView);
+        System.out.println("ElementView: " + elementView);
+
+        // If the elementView is not null and the treeView is null, then an edit
+        // was made on the puzzle editor
+        if (elementView != null && treeView == null) {
+            ICommand edit = new EditDataCommand(elementView, selection, e);
+            getInstance().getHistory().pushChange(edit);
+        }
+        else if (elementView != null) {
             if (board instanceof CaseBoard) {
                 CaseBoard caseBoard = (CaseBoard) board;
                 AutoCaseRuleCommand autoCaseRuleCommand = new AutoCaseRuleCommand(elementView, selection, caseBoard.getCaseRule(), caseBoard, e);
                 if (autoCaseRuleCommand.canExecute()) {
                     autoCaseRuleCommand.execute();
+                    System.out.println("PUSH CHANGE 1");
                     getInstance().getHistory().pushChange(autoCaseRuleCommand);
                     if (treePanel != null) {
                         treePanel.updateError("");
@@ -119,6 +131,7 @@ public class ElementController implements MouseListener, MouseMotionListener, Ac
                     ICommand edit = new EditDataCommand(elementView, selection, e);
                     if (edit.canExecute()) {
                         edit.execute();
+                        System.out.println("PUSH CHANGE 2");
                         getInstance().getHistory().pushChange(edit);
                         if (treePanel != null) {
                             treePanel.updateError("");
@@ -132,6 +145,7 @@ public class ElementController implements MouseListener, MouseMotionListener, Ac
                 }
             }
         }
+
 //        if (selectedElement != null) {
         GridBoard b = (GridBoard) this.boardView.getBoard();
         Point point = e.getPoint();
