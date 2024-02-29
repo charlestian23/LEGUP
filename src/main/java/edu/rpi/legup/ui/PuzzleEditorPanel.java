@@ -97,6 +97,7 @@ public class PuzzleEditorPanel extends LegupPanel implements IHistoryListener {
     }
 
     public void setMenuBar() {
+        System.out.println("Setting Puzzle Editor menu bar");
         String os = LegupUI.getOS();
         menuBar = new JMenuBar();
         menus = new JMenu[3];
@@ -149,8 +150,9 @@ public class PuzzleEditorPanel extends LegupPanel implements IHistoryListener {
         fitBoardToScreen = new JMenuItem("Fit Board to Screen");
 
         menus[1].add(undo);
+        System.out.println("Setting undo action listener in puzzle editor");
         undo.addActionListener((ActionEvent) ->
-                GameBoardFacade.getInstance().getHistory().undo(this.getClass().getSimpleName()));
+            GameBoardFacade.getInstance().getHistory().undo(this.getClass().getSimpleName()));
         if (os.equals("mac")) {
             undo.setAccelerator(KeyStroke.getKeyStroke('Z', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
@@ -409,17 +411,50 @@ public class PuzzleEditorPanel extends LegupPanel implements IHistoryListener {
 
     @Override
     public void onPushChange(ICommand command) {
+        LOGGER.info("Pushing " + command.getClass().getSimpleName() + " to stack.");
+        undo.setEnabled(true);
+//        toolBarButtons[ToolbarName.UNDO.ordinal()].setEnabled(true);
+        redo.setEnabled(false);
+//        toolBarButtons[ToolbarName.REDO.ordinal()].setEnabled(false);
 
+        String puzzleName = GameBoardFacade.getInstance().getPuzzleModule().getName();
+        File puzzleFile = new File(GameBoardFacade.getInstance().getCurFileName());
+        frame.setTitle(puzzleName + " - " + puzzleFile.getName() + " *");
     }
 
     @Override
     public void onUndo(boolean isBottom, boolean isTop) {
-
+        System.out.println("RUNNING ON UNDO PUZZLE EDITOR");
+        undo.setEnabled(!isBottom);
+//        toolBarButtons[ToolbarName.UNDO.ordinal()].setEnabled(!isBottom);
+        redo.setEnabled(!isTop);
+//        toolBarButtons[ToolbarName.REDO.ordinal()].setEnabled(!isTop);
+        String puzzleName = GameBoardFacade.getInstance().getPuzzleModule().getName();
+        File puzzleFile = new File(GameBoardFacade.getInstance().getCurFileName());
+        if (isBottom) {
+            frame.setTitle(puzzleName + " - " + puzzleFile.getName());
+        }
+        else {
+            frame.setTitle(puzzleName + " - " + puzzleFile.getName() + " *");
+        }
     }
 
     @Override
     public void onRedo(boolean isBottom, boolean isTop) {
-
+        undo.setEnabled(!isBottom);
+//        toolBarButtons[ToolbarName.UNDO.ordinal()].setEnabled(!isBottom);
+        redo.setEnabled(!isTop);
+//        toolBarButtons[ToolbarName.REDO.ordinal()].setEnabled(!isTop);
+        if (isBottom) {
+            String puzzleName = GameBoardFacade.getInstance().getPuzzleModule().getName();
+            File puzzleFile = new File(GameBoardFacade.getInstance().getCurFileName());
+            frame.setTitle(puzzleName + " - " + puzzleFile.getName());
+        }
+        else {
+            String puzzleName = GameBoardFacade.getInstance().getPuzzleModule().getName();
+            File puzzleFile = new File(GameBoardFacade.getInstance().getCurFileName());
+            frame.setTitle(puzzleName + " - " + puzzleFile.getName() + " *");
+        }
     }
 
     @Override

@@ -110,6 +110,7 @@ public class ProofEditorPanel extends LegupPanel implements IHistoryListener {
     }
 
     public JMenuBar getMenuBar() {
+        System.out.println("GETTING JMENU BAR PROOF EDITOR");
         if (mBar != null) return mBar;
         mBar = new JMenuBar();
 
