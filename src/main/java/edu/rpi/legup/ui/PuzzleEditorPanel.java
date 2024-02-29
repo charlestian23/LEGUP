@@ -150,7 +150,7 @@ public class PuzzleEditorPanel extends LegupPanel implements IHistoryListener {
 
         menus[1].add(undo);
         undo.addActionListener((ActionEvent) ->
-                GameBoardFacade.getInstance().getHistory().undo());
+                GameBoardFacade.getInstance().getHistory().undo(this.getClass().getSimpleName()));
         if (os.equals("mac")) {
             undo.setAccelerator(KeyStroke.getKeyStroke('Z', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }

@@ -301,7 +301,7 @@ public class ProofEditorPanel extends LegupPanel implements IHistoryListener {
 
         edit.add(undo);
         undo.addActionListener((ActionEvent) ->
-                GameBoardFacade.getInstance().getHistory().undo());
+                GameBoardFacade.getInstance().getHistory().undo(this.getClass().getSimpleName()));
         if (os.equals("mac")) {
             undo.setAccelerator(KeyStroke.getKeyStroke('Z', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }

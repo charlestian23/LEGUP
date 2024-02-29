@@ -41,6 +41,7 @@ public class History {
                 }
             }
             history.add(command);
+            System.out.println("Added command to history: " + command);
             curIndex++;
             LOGGER.info("Pushed " + command.getClass().getSimpleName() + " to stack.");
             GameBoardFacade.getInstance().notifyHistoryListeners(l -> l.onPushChange(command));
@@ -50,13 +51,19 @@ public class History {
     /**
      * Undoes an action
      */
-    public void undo() {
+    public void undo(String originClass) {
         synchronized (lock) {
             if (curIndex > -1) {
                 ICommand command = history.get(curIndex--);
                 command.undo();
                 LOGGER.info("Undoed " + command.getClass().getSimpleName());
-                GameBoardFacade.getInstance().notifyHistoryListeners(l -> l.onUndo(curIndex < 0, curIndex == history.size() - 1));
+                LOGGER.info("Origin class for undo command: " + originClass);
+                GameBoardFacade.getInstance().notifyHistoryListeners(l -> {
+                    System.out.println(l.getClass().getSimpleName() + " " + originClass); // TODO: DELETE THIS ONCE DONE DEBUGGING
+                    if (l.getClass().getSimpleName().equals(originClass)) {
+                        l.onUndo(curIndex < 0, curIndex == history.size() - 1);
+                    }
+                });
             }
         }
     }
