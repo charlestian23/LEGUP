@@ -5,6 +5,8 @@ import edu.rpi.legup.app.GameBoardFacade;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.rpi.legup.ui.ProofEditorPanel;
+import edu.rpi.legup.ui.PuzzleEditorPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,7 +46,16 @@ public class History {
             System.out.println("Added command to history: " + command);
             curIndex++;
             LOGGER.info("Pushed " + command.getClass().getSimpleName() + " to stack.");
-            GameBoardFacade.getInstance().notifyHistoryListeners(l -> l.onPushChange(command));
+            GameBoardFacade.getInstance().notifyHistoryListeners(l -> {
+                System.out.println("Command error: " + command.getError());
+                if (!(command instanceof EditDataCommand
+                        && command.getError() != null
+                        && command.getError().equals(CommandError.ONE_SELECTED_VIEW.toString())
+                        && !l.getClass().getSimpleName().equals(PuzzleEditorPanel.class.getSimpleName()))) {
+                    System.out.println("PUSHING CHANGES");
+                    l.onPushChange(command);
+                }
+            });
         }
     }
 

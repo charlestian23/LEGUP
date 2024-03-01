@@ -418,8 +418,7 @@ public class PuzzleEditorPanel extends LegupPanel implements IHistoryListener {
 //        toolBarButtons[ToolbarName.REDO.ordinal()].setEnabled(false);
 
         String puzzleName = GameBoardFacade.getInstance().getPuzzleModule().getName();
-        File puzzleFile = new File(GameBoardFacade.getInstance().getCurFileName());
-        frame.setTitle(puzzleName + " - " + puzzleFile.getName() + " *");
+        frame.setTitle(puzzleName + " - New " + puzzleName + " Puzzle *");
     }
 
     @Override
@@ -432,10 +431,10 @@ public class PuzzleEditorPanel extends LegupPanel implements IHistoryListener {
         String puzzleName = GameBoardFacade.getInstance().getPuzzleModule().getName();
         File puzzleFile = new File(GameBoardFacade.getInstance().getCurFileName());
         if (isBottom) {
-            frame.setTitle(puzzleName + " - " + puzzleFile.getName());
+            frame.setTitle(puzzleName + " - New " + puzzleName + " Puzzle");
         }
         else {
-            frame.setTitle(puzzleName + " - " + puzzleFile.getName() + " *");
+            frame.setTitle(puzzleName + " - New " + puzzleName + " Puzzle *");
         }
     }
 
@@ -448,12 +447,12 @@ public class PuzzleEditorPanel extends LegupPanel implements IHistoryListener {
         if (isBottom) {
             String puzzleName = GameBoardFacade.getInstance().getPuzzleModule().getName();
             File puzzleFile = new File(GameBoardFacade.getInstance().getCurFileName());
-            frame.setTitle(puzzleName + " - " + puzzleFile.getName());
+            frame.setTitle(puzzleName + " - New " + puzzleName + " Puzzle");
         }
         else {
             String puzzleName = GameBoardFacade.getInstance().getPuzzleModule().getName();
             File puzzleFile = new File(GameBoardFacade.getInstance().getCurFileName());
-            frame.setTitle(puzzleName + " - " + puzzleFile.getName() + " *");
+            frame.setTitle(puzzleName + " - New " + puzzleName + " Puzzle *");
         }
     }
 

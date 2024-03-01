@@ -101,11 +101,12 @@ public class ElementController implements MouseListener, MouseMotionListener, Ac
         System.out.println("TreeView: " + treeView);
         System.out.println("BoardView: " + boardView);
         System.out.println("ElementView: " + elementView);
+//        System.out.println("Selection: " + selection.getSelectedViews().size());
 
         // If the elementView is not null and the treeView is null, then an edit
         // was made on the puzzle editor
         if (elementView != null && treeView == null) {
-            ICommand edit = new EditDataCommand(elementView, selection, e);
+            ICommand edit = new EditDataCommand(elementView, new TreeViewSelection(), e);
             getInstance().getHistory().pushChange(edit);
         }
         else if (elementView != null) {
